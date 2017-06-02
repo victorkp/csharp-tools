@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CSPROJ=$(find . -iname "*.csproj")
+SOURCE_FILES=$(find . -iname "*.cs")
+
+# Default executable name
+PROJECT_NAME="out"
+
+# Get project name from CSPROJ
+if [ $CSPROJ != "" ]; then
+    PROJECT_NAME=$(grep "AssemblyName" $CSPROJ)
+    PROJECT_NAME=$(echo "$PROJECT_NAME" | sed 's/\s*<AssemblyName>//g' | sed 's/<\/AssemblyName>//g')
+fi
+
+mcs -out:"$PROJECT_NAME" $SOURCE_FILES
